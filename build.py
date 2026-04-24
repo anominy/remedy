@@ -63,11 +63,11 @@ _APPC_CMD_LST = [sys.executable, '-m', _APPC_CMD_EXE,
     '--standalone',
     # '--onefile',
     '--enable-plugin=pyside6',
-    f'--output-dir={str(_BUILD_DIR_PATH.resolve())}',
+    f'--output-dir={_BUILD_DIR_PATH.resolve()}',
     f'--output-filename={_MAIN_EXE_NAME}{_EXE_EXT}',
-    f'--include-data-files={str(_LICENSE_PATH.resolve())}={_LICENSE_NAME}',
+    f'--include-data-files={_LICENSE_PATH.resolve()}={_LICENSE_NAME}',
     '--include-windows-runtime-dlls=yes',
-    f'--windows-icon-from-ico={str(_ICON_RES_PATH.resolve())}',
+    f'--windows-icon-from-ico={_ICON_RES_PATH.resolve()}',
 ]
 _APPC_CMD_REL_LST = ['--lto=yes', '--windows-console-mode=disable']
 _APPC_CMD_DBG_LST = ['--lto=no', '--windows-console-mode=force']
