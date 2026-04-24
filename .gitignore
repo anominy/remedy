@@ -5,4 +5,8 @@ __pycache__/
 *.iws
 *.log
 
+/dist/
+**/*.egg-info/
+
+/build/
 /out/
