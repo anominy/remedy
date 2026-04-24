@@ -121,28 +121,27 @@ def _s(*args):
 #     return result
 
 
-class _NewlineTrackerPipe:
-    def __init__(self, pipe):
-        self.__pipe = pipe
-        self.__last = None
-
-    def write(self, text):
-        self.__pipe.write(text)
-        self.__last = text
-
-    def flush(self):
-        self.__pipe.flush()
-
-    @property
-    def is_last_newline(self):
-        if self.__last is None:
-            return None
-
-        return self.__last.splitlines(keepends=True)[-1] \
-            .endswith('\n')
-
-
 def _page_text(text, is_paged=None, pipe=None):
+    class _NewlineTrackerPipe:
+        def __init__(self, pipe):
+            self.__pipe = pipe
+            self.__last = None
+
+        def write(self, text):
+            self.__pipe.write(text)
+            self.__last = text
+
+        def flush(self):
+            self.__pipe.flush()
+
+        @property
+        def is_last_newline(self):
+            if self.__last is None:
+                return None
+
+            return self.__last.splitlines(keepends=True)[-1] \
+                .endswith('\n')
+
     if is_paged is None:
         is_paged = False
 
