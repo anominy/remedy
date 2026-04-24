@@ -252,7 +252,7 @@ def _compile_exe(is_release=None):
         return _f(ex)
 
 
-def _clean():
+def _clean_out():
     try:
         if _OUT_DIR_PATH.exists():
             shutil.rmtree(_OUT_DIR_PATH)
@@ -333,7 +333,7 @@ def main():
         return _SUCC_CODE
 
     if is_clean_flag:
-        is_success = _clean()
+        is_success = _clean_out()
         if not is_success:
             return _FAIL_CODE
 
