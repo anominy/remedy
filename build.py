@@ -35,8 +35,11 @@ _ICO_EXT = '.ico'
 _MAIN_PY_NAME = 'main'
 _MAIN_EXE_NAME = 'Remedy'
 
+_LICENSE_NAME = 'LICENSE'
+_RESOURCES_NAME = 'resources'
+
 _ROOT_DIR_PATH = Path(__file__).parent
-_LICENSE_PATH = _ROOT_DIR_PATH / 'LICENSE'
+_LICENSE_PATH = _ROOT_DIR_PATH / _LICENSE_NAME
 _RES_DIR_PATH = _ROOT_DIR_PATH / 'res'
 _SRC_DIR_PATH = _ROOT_DIR_PATH / 'src'
 _OUT_DIR_PATH = _ROOT_DIR_PATH / 'out'
@@ -45,8 +48,8 @@ _DIST_DIR_PATH = _BUILD_DIR_PATH / f'{_MAIN_PY_NAME}.dist'
 _ICON_DIR_PATH = _RES_DIR_PATH / 'icons'
 _REL_OUT_DIR_PATH = _OUT_DIR_PATH / 'release'
 _DBG_OUT_DIR_PATH = _OUT_DIR_PATH / 'debug'
-_QRC_RES_PATH = _RES_DIR_PATH / f'resources{_QRC_EXT}'
-_QRC_SRC_PATH = _SRC_DIR_PATH / f'resources{_PY_EXT}'
+_QRC_RES_PATH = _RES_DIR_PATH / f'{_RESOURCES_NAME}{_QRC_EXT}'
+_QRC_SRC_PATH = _SRC_DIR_PATH / f'{_RESOURCES_NAME}{_PY_EXT}'
 _MAIN_SRC_PATH = _SRC_DIR_PATH / f'{_MAIN_PY_NAME}{_PY_EXT}'
 _MAIN_DIST_PATH = _DIST_DIR_PATH / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
 _ICON_RES_PATH = _ICON_DIR_PATH / f'icon{_ICO_EXT}'
@@ -62,6 +65,7 @@ _APPC_CMD_LST = [sys.executable, '-m', _APPC_CMD_EXE,
     '--enable-plugin=pyside6',
     f'--output-dir={str(_BUILD_DIR_PATH.resolve())}',
     f'--output-filename={_MAIN_EXE_NAME}{_EXE_EXT}',
+    f'--include-data-files={str(_LICENSE_PATH.resolve())}={_LICENSE_NAME}',
     '--include-windows-runtime-dlls=yes',
     f'--windows-icon-from-ico={str(_ICON_RES_PATH.resolve())}',
 ]
