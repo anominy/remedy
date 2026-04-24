@@ -127,13 +127,13 @@ def _s(*args):
 
 def _page_text(text, is_paged=None, pipe=None):
     class NewlineTrackerPipe:
-        def __init__(self, pipe):
-            self.__pipe = pipe
+        def __init__(self, pipe_):
+            self.__pipe = pipe_
             self.__last = None
 
-        def write(self, text):
-            self.__pipe.write(text)
-            self.__last = text
+        def write(self, text_):
+            self.__pipe.write(text_)
+            self.__last = text_
 
         def flush(self):
             self.__pipe.flush()
