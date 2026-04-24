@@ -122,7 +122,7 @@ def _s(*args):
 
 
 def _page_text(text, is_paged=None, pipe=None):
-    class _NewlineTrackerPipe:
+    class NewlineTrackerPipe:
         def __init__(self, pipe):
             self.__pipe = pipe
             self.__last = None
@@ -153,7 +153,7 @@ def _page_text(text, is_paged=None, pipe=None):
         return
 
     original_pipe = pipe
-    pipe = _NewlineTrackerPipe(original_pipe)
+    pipe = NewlineTrackerPipe(original_pipe)
     paginate(text, output=pipe)
 
     # noinspection PySimplifyBooleanCheck
@@ -219,8 +219,8 @@ def _compile_exe(is_release=None):
             shutil.rmtree(out_dir_path)
         out_dir_path.mkdir(parents=True, exist_ok=True)
 
-        def _log_copy(item_dir_path, dest_dir_path, item_path, dest_path):
-            def _e(base, path):
+        def log_copy(item_dir_path, dest_dir_path, item_path, dest_path):
+            def e(base, path):
                 rel_base_path = base.relative_to(cwd_path)
                 rel_path_path = path.relative_to(cwd_path)
 
@@ -236,14 +236,14 @@ def _compile_exe(is_release=None):
 
             result = shutil.copy2(item_path, dest_path)
 
-            rel_item_path = _e(item_dir_path, item_path)
-            rel_dest_path = _e(dest_dir_path, dest_path)
+            rel_item_path = e(item_dir_path, item_path)
+            rel_dest_path = e(dest_dir_path, dest_path)
             _s(rel_item_path, '->', rel_dest_path)
 
             return result
 
         shutil.copytree(_DIST_DIR_PATH, out_dir_path, dirs_exist_ok=True, copy_function=lambda item_path, dest_path: \
-            _log_copy(_DIST_DIR_PATH, out_dir_path, item_path, dest_path))
+            log_copy(_DIST_DIR_PATH, out_dir_path, item_path, dest_path))
 
         main_out_path = out_dir_path / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
         rel_main_out_path = main_out_path.relative_to(cwd_path)
