@@ -272,82 +272,62 @@ def main():
     arg_parser.add_argument(
         '-l', '--license',
         help='show the project license and exit',
-        dest='is_license_flag',
         action='store_true'
     )
 
     arg_parser.add_argument(
         '-p', '--page',
         help='use paged output for large texts',
-        dest='is_page_flag',
         action='store_true'
     )
 
     arg_parser.add_argument(
         '-q', '--qrc',
         help=f'compile {_QRC_RES_PATH.relative_to(Path.cwd())} with {_QRCC_CMD_EXE}',
-        dest='is_qrc_flag',
         action='store_true'
     )
 
     arg_parser.add_argument(
         '-e', '--exe',
         help='compile this project with nuitka',
-        dest='is_exe_flag',
         action='store_true'
     )
 
     arg_parser.add_argument(
         '-r', '--release',
         help='use release flags for compilation of this project',
-        dest='is_release_flag',
         action='store_true'
     )
 
     arg_parser.add_argument(
         '-c', '--clean',
         help='clean output directory of this project',
-        dest='is_clean_flag',
         action='store_true'
     )
 
     args = arg_parser.parse_args()
-
-    is_license_flag = args.is_license_flag
-    is_page_flag = args.is_page_flag
-    is_qrc_flag = args.is_qrc_flag
-    is_exe_flag = args.is_exe_flag
-    is_release_flag = args.is_release_flag
-    is_clean_flag = args.is_clean_flag
-
-    any_flags = [
-        is_license_flag,
-        is_qrc_flag,
-        is_exe_flag,
-        is_clean_flag
-    ]
-    if not any(any_flags):
+    if not any([args.license, args.qrc, args.exe, args.clean]):
         arg_parser.print_help()
         return _SUCC_CODE
 
-    if is_license_flag:
-        is_success = _print_license(is_page_flag)
+    if args.license:
+        is_success = _print_license(args.page)
         if not is_success:
             return _FAIL_CODE
         return _SUCC_CODE
 
-    if is_clean_flag:
+    if args.clean:
         is_success = _clean_out()
         if not is_success:
             return _FAIL_CODE
 
-    if is_qrc_flag:
+    if args.qrc:
         is_success = _compile_qrc()
-        if not is_success and is_exe_flag:
+        if not is_success and args.exe:
             return _FAIL_CODE
 
-    if is_exe_flag:
-        is_success = _compile_exe(is_release_flag)
+    if args.exe:
+        is_success = _compile_exe(args.release)
         if not is_success:
             return _FAIL_CODE
 
