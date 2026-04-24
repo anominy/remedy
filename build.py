@@ -242,8 +242,8 @@ def _compile_exe(is_release=None):
 
             return result
 
-        shutil.copytree(_DIST_DIR_PATH, out_dir_path, dirs_exist_ok=True, copy_function=lambda item_path, dest_path: \
-            log_copy(_DIST_DIR_PATH, out_dir_path, item_path, dest_path))
+        shutil.copytree(_DIST_DIR_PATH, out_dir_path, dirs_exist_ok=True, copy_function=\
+            lambda item_path, dest_path: log_copy(_DIST_DIR_PATH, out_dir_path, item_path, dest_path))
 
         main_out_path = out_dir_path / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
         rel_main_out_path = main_out_path.relative_to(cwd_path)
