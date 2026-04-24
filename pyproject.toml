@@ -1,3 +1,6 @@
+[tool.uv]
+package = false
+
 [project]
 name = "remedy"
 version = "0.1.0"
@@ -5,11 +8,12 @@ requires-python = "~=3.13.0"
 dependencies = [
     "babel>=2.18.0",
     "more-or-less>=1.0.2",
-    "nuitka>=4.0.8",
     "playwright>=1.58.0",
     "pyside6>=6.11.0",
     "xlwings>=0.35.1",
 ]
 
-[tool.uv]
-package = false
+[dependency-groups]
+dev = [
+    "nuitka>=4.0.8",
+]
