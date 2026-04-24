@@ -1,0 +1,26 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>icons/icon.ico</file>
+    </qresource>
+    <qresource>
+        <file>fonts/MontserratAlternates/Black.ttf</file>
+        <file>fonts/MontserratAlternates/BlackItalic.ttf</file>
+        <file>fonts/MontserratAlternates/Bold.ttf</file>
+        <file>fonts/MontserratAlternates/BoldItalic.ttf</file>
+        <file>fonts/MontserratAlternates/ExtraBold.ttf</file>
+        <file>fonts/MontserratAlternates/ExtraBoldItalic.ttf</file>
+        <file>fonts/MontserratAlternates/ExtraLight.ttf</file>
+        <file>fonts/MontserratAlternates/ExtraLightItalic.ttf</file>
+        <file>fonts/MontserratAlternates/Italic.ttf</file>
+        <file>fonts/MontserratAlternates/Light.ttf</file>
+        <file>fonts/MontserratAlternates/LightItalic.ttf</file>
+        <file>fonts/MontserratAlternates/Medium.ttf</file>
+        <file>fonts/MontserratAlternates/MediumItalic.ttf</file>
+        <file>fonts/MontserratAlternates/Regular.ttf</file>
+        <file>fonts/MontserratAlternates/SemiBold.ttf</file>
+        <file>fonts/MontserratAlternates/SemiBoldItalic.ttf</file>
+        <file>fonts/MontserratAlternates/Thin.ttf</file>
+        <file>fonts/MontserratAlternates/ThinItalic.ttf</file>
+    </qresource>
+</RCC>
