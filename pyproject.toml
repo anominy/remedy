@@ -7,7 +7,7 @@ members = ["pkg/*"]
 [project]
 name = "remedy"
 version = "0.1.0"
-requires-python = "~=3.13.0"
+requires-python = "==3.13.*"
 dependencies = [
     "more-or-less>=1.0.2",
     "pyside6>=6.11.0",
