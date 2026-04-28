@@ -30,6 +30,7 @@ _SUCC_MSG_PREFIX = '-- SUCCESS: '
 _PY_EXT = '.py'
 _EXE_EXT = '.exe'
 _QRC_EXT = '.qrc'
+_JPG_EXT = '.jpg'
 _ICO_EXT = '.ico'
 
 _MAIN_PY_NAME = 'main'
@@ -45,17 +46,27 @@ _SRC_DIR_PATH = _ROOT_DIR_PATH / 'src'
 _OUT_DIR_PATH = _ROOT_DIR_PATH / 'out'
 _BLD_DIR_PATH = _ROOT_DIR_PATH / 'build'
 _DST_DIR_PATH = _BLD_DIR_PATH / f'{_MAIN_PY_NAME}.dist'
+_IMG_DIR_PATH = _RES_DIR_PATH / 'images'
 _ICN_DIR_PATH = _RES_DIR_PATH / 'icons'
 _REL_OUT_DIR_PATH = _OUT_DIR_PATH / 'release'
 _DBG_OUT_DIR_PATH = _OUT_DIR_PATH / 'debug'
+_ICN_IMG_PATH = _IMG_DIR_PATH / f'icon{_JPG_EXT}'
 _ICN_RES_PATH = _ICN_DIR_PATH / f'icon{_ICO_EXT}'
 _QRC_RES_PATH = _RES_DIR_PATH / f'{_RESOURCES_NAME}{_QRC_EXT}'
 _QRC_SRC_PATH = _SRC_DIR_PATH / f'{_RESOURCES_NAME}{_PY_EXT}'
 _MAIN_SRC_PATH = _SRC_DIR_PATH / f'{_MAIN_PY_NAME}{_PY_EXT}'
 _MAIN_DST_PATH = _DST_DIR_PATH / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
 
+_ICNC_CMD_EXE = 'magick'
+_ICNC_CMD_LST = [_ICNC_CMD_EXE, str(_ICN_IMG_PATH.resolve()),
+    '-define', 'icon:auto-resize=256,128,64,48,32,16',
+    str(_ICN_RES_PATH.resolve())
+]
+
 _QRCC_CMD_EXE = 'pyside6-rcc'
-_QRCC_CMD_LST = [_QRCC_CMD_EXE, str(_QRC_RES_PATH.resolve()), '-o', str(_QRC_SRC_PATH.resolve())]
+_QRCC_CMD_LST = [_QRCC_CMD_EXE, str(_QRC_RES_PATH.resolve()),
+    '-o', str(_QRC_SRC_PATH.resolve())
+]
 
 _APPC_CMD_EXE = 'nuitka'
 _APPC_CMD_LST = [sys.executable, '-m', _APPC_CMD_EXE,
@@ -177,6 +188,30 @@ def _print_license(is_paged=None):
         return _f(ex)
 
 
+def _compile_icon():
+    # noinspection PyDeprecation
+    if not shutil.which(_ICNC_CMD_EXE):
+        if sys.version_info < (3, 12) \
+                and isinstance(_ICNC_CMD_EXE, Path):
+            return _f('Could not find', _ICNC_CMD_EXE, 'because of unsupported Python version')
+
+        return _f('Could not find', _ICNC_CMD_EXE)
+
+    try:
+        subprocess.run(_ICNC_CMD_LST, check=True)
+
+        cwd_path = Path.cwd()
+        rel_icn_img_path = _ICN_IMG_PATH.relative_to(cwd_path)
+
+        if not rel_icn_img_path.exists():
+            return _f('Could not compile', rel_icn_img_path)
+
+        rel_icn_res_path = _ICN_RES_PATH.relative_to(cwd_path)
+        return _s(rel_icn_img_path, '->', rel_icn_res_path)
+    except Exception as ex:
+        return _f(ex)
+
+
 def _compile_qrc():
     try:
         subprocess.run(_QRCC_CMD_LST, check=True)
@@ -267,6 +302,8 @@ def _clean_out():
 
 
 def main():
+    cwd_path = Path.cwd()
+
     arg_parser = ArgumentParser(description='Build script for Remedy desktop application')
 
     arg_parser.add_argument(
@@ -282,8 +319,14 @@ def main():
     )
 
     arg_parser.add_argument(
+        '-i', '--icon',
+        help=f'compile {_ICN_IMG_PATH.relative_to(cwd_path)} with {_ICNC_CMD_EXE}',
+        action='store_true'
+    )
+
+    arg_parser.add_argument(
         '-q', '--qrc',
-        help=f'compile {_QRC_RES_PATH.relative_to(Path.cwd())} with {_QRCC_CMD_EXE}',
+        help=f'compile {_QRC_RES_PATH.relative_to(cwd_path)} with {_QRCC_CMD_EXE}',
         action='store_true'
     )
 
@@ -306,7 +349,7 @@ def main():
     )
 
     args = arg_parser.parse_args()
-    if not any([args.license, args.qrc, args.exe, args.clean]):
+    if not any([args.license, args.icon, args.qrc, args.exe, args.clean]):
         arg_parser.print_help()
         return _SUCC_CODE
 
@@ -319,6 +362,11 @@ def main():
     if args.clean:
         is_success = _clean_out()
         if not is_success:
+            return _FAIL_CODE
+
+    if args.icon:
+        is_success = _compile_icon()
+        if not is_success and args.exe:
             return _FAIL_CODE
 
     if args.qrc:
