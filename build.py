@@ -202,11 +202,11 @@ def _compile_icon():
 
         cwd_path = Path.cwd()
         rel_icn_img_path = _ICN_IMG_PATH.relative_to(cwd_path)
+        rel_icn_res_path = _ICN_RES_PATH.relative_to(cwd_path)
 
-        if not rel_icn_img_path.exists():
+        if not rel_icn_res_path.exists():
             return _f('Could not compile', rel_icn_img_path)
 
-        rel_icn_res_path = _ICN_RES_PATH.relative_to(cwd_path)
         return _s(rel_icn_img_path, '->', rel_icn_res_path)
     except Exception as ex:
         return _f(ex)
