@@ -6,6 +6,7 @@ requires-python = "==3.13.*"
 members = [
     "remedy",
     "remedy-logging",
+    "remedy-translation",
 ]
 
 [[package]]
@@ -95,6 +96,11 @@ dev = [{ name = "nuitka", specifier = ">=4.0.8" }]
 name = "remedy-logging"
 version = "0.1.0"
 source = { editable = "pkg/remedy-logging" }
+
+[[package]]
+name = "remedy-translation"
+version = "0.1.0"
+source = { editable = "pkg/remedy-translation" }
 
 [[package]]
 name = "shiboken6"

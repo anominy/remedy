@@ -1,0 +1,12 @@
+[project]
+name = "remedy-translation"
+version = "0.1.0"
+requires-python = "==3.13.*"
+
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["rentr"]
+package-dir = {"remtr" = "src"}
