@@ -43,16 +43,16 @@ _LICENSE_PATH = _ROOT_DIR_PATH / _LICENSE_NAME
 _RES_DIR_PATH = _ROOT_DIR_PATH / 'res'
 _SRC_DIR_PATH = _ROOT_DIR_PATH / 'src'
 _OUT_DIR_PATH = _ROOT_DIR_PATH / 'out'
-_BUILD_DIR_PATH = _ROOT_DIR_PATH / 'build'
-_DIST_DIR_PATH = _BUILD_DIR_PATH / f'{_MAIN_PY_NAME}.dist'
-_ICON_DIR_PATH = _RES_DIR_PATH / 'icons'
+_BLD_DIR_PATH = _ROOT_DIR_PATH / 'build'
+_DST_DIR_PATH = _BLD_DIR_PATH / f'{_MAIN_PY_NAME}.dist'
+_ICN_DIR_PATH = _RES_DIR_PATH / 'icons'
 _REL_OUT_DIR_PATH = _OUT_DIR_PATH / 'release'
 _DBG_OUT_DIR_PATH = _OUT_DIR_PATH / 'debug'
+_ICN_RES_PATH = _ICN_DIR_PATH / f'icon{_ICO_EXT}'
 _QRC_RES_PATH = _RES_DIR_PATH / f'{_RESOURCES_NAME}{_QRC_EXT}'
 _QRC_SRC_PATH = _SRC_DIR_PATH / f'{_RESOURCES_NAME}{_PY_EXT}'
 _MAIN_SRC_PATH = _SRC_DIR_PATH / f'{_MAIN_PY_NAME}{_PY_EXT}'
-_MAIN_DIST_PATH = _DIST_DIR_PATH / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
-_ICON_RES_PATH = _ICON_DIR_PATH / f'icon{_ICO_EXT}'
+_MAIN_DST_PATH = _DST_DIR_PATH / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
 
 _QRCC_CMD_EXE = 'pyside6-rcc'
 _QRCC_CMD_LST = [_QRCC_CMD_EXE, str(_QRC_RES_PATH.resolve()), '-o', str(_QRC_SRC_PATH.resolve())]
@@ -63,11 +63,11 @@ _APPC_CMD_LST = [sys.executable, '-m', _APPC_CMD_EXE,
     '--standalone',
     # '--onefile',
     '--enable-plugin=pyside6',
-    f'--output-dir={_BUILD_DIR_PATH.resolve()}',
+    f'--output-dir={_BLD_DIR_PATH.resolve()}',
     f'--output-filename={_MAIN_EXE_NAME}{_EXE_EXT}',
     f'--include-data-files={_LICENSE_PATH.resolve()}={_LICENSE_NAME}',
     '--include-windows-runtime-dlls=yes',
-    f'--windows-icon-from-ico={_ICON_RES_PATH.resolve()}',
+    f'--windows-icon-from-ico={_ICN_RES_PATH.resolve()}',
 ]
 _APPC_CMD_REL_LST = ['--lto=yes', '--windows-console-mode=disable']
 _APPC_CMD_DBG_LST = ['--lto=no', '--windows-console-mode=force']
@@ -206,12 +206,12 @@ def _compile_exe(is_release=None):
     try:
         subprocess.run([*_APPC_CMD_LST, *compile_args, str(_MAIN_SRC_PATH.resolve())], check=True)
 
-        if not _DIST_DIR_PATH.exists():
-            rel_dist_dir_path = _DIST_DIR_PATH.relative_to(cwd_path)
+        if not _DST_DIR_PATH.exists():
+            rel_dist_dir_path = _DST_DIR_PATH.relative_to(cwd_path)
             return _f('Could not find', rel_dist_dir_path)
 
-        if not _MAIN_DIST_PATH.exists():
-            rel_main_dist_path = _MAIN_DIST_PATH.relative_to(cwd_path)
+        if not _MAIN_DST_PATH.exists():
+            rel_main_dist_path = _MAIN_DST_PATH.relative_to(cwd_path)
             return _f('Could not compile', rel_main_dist_path)
 
         if is_release:
@@ -246,8 +246,8 @@ def _compile_exe(is_release=None):
 
             return result
 
-        shutil.copytree(_DIST_DIR_PATH, out_dir_path, dirs_exist_ok=True, copy_function=\
-            lambda item_path, dest_path: log_copy(_DIST_DIR_PATH, out_dir_path, item_path, dest_path))
+        shutil.copytree(_DST_DIR_PATH, out_dir_path, dirs_exist_ok=True, copy_function=\
+            lambda item_path, dest_path: log_copy(_DST_DIR_PATH, out_dir_path, item_path, dest_path))
 
         main_out_path = out_dir_path / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
         rel_main_out_path = main_out_path.relative_to(cwd_path)
