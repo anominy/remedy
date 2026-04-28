@@ -2,6 +2,12 @@ version = 1
 revision = 3
 requires-python = "==3.13.*"
 
+[manifest]
+members = [
+    "remedy",
+    "remedy-logging",
+]
+
 [[package]]
 name = "more-or-less"
 version = "1.0.2"
@@ -84,6 +90,11 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [{ name = "nuitka", specifier = ">=4.0.8" }]
+
+[[package]]
+name = "remedy-logging"
+version = "0.1.0"
+source = { editable = "pkg/remedy-logging" }
 
 [[package]]
 name = "shiboken6"
