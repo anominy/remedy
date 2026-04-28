@@ -212,6 +212,14 @@ def _compile_icon():
 
 
 def _compile_qrc():
+    # noinspection PyDeprecation
+    if not shutil.which(_QRCC_CMD_EXE):
+        if sys.version_info < (3, 12) \
+                and isinstance(_QRCC_CMD_EXE, Path):
+            return _f('Could not find', _QRCC_CMD_EXE, 'because of unsupported Python version')
+
+        return _f('Could not find', _QRCC_CMD_EXE)
+
     try:
         subprocess.run(_QRCC_CMD_LST, check=True)
 
