@@ -230,7 +230,7 @@ def _compile_exe(is_release=None):
 
     cwd_path = Path.cwd()
     rel_main_src_path = _MAIN_SRC_PATH.relative_to(cwd_path)
-    if not _MAIN_SRC_PATH.exists():
+    if not rel_main_src_path.exists():
         return _f('Could not find', rel_main_src_path)
 
     if is_release:
