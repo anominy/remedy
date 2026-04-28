@@ -255,8 +255,7 @@ def _compile_exe(is_release=None):
             rel_dist_dir_path = _DST_DIR_PATH.relative_to(cwd_path)
             return _f('Could not find', rel_dist_dir_path)
 
-        main_dist_path = _MAIN_DST_PATH / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
-        if not main_dist_path.exists():
+        if not _MAIN_DST_PATH.exists():
             return _f('Could not compile', rel_main_src_path)
 
         if is_release:
