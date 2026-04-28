@@ -202,11 +202,10 @@ def _compile_icon():
 
         cwd_path = Path.cwd()
         rel_icn_img_path = _ICN_IMG_PATH.relative_to(cwd_path)
-        rel_icn_res_path = _ICN_RES_PATH.relative_to(cwd_path)
-
-        if not rel_icn_res_path.exists():
+        if not _ICN_RES_PATH.exists():
             return _f('Could not compile', rel_icn_img_path)
 
+        rel_icn_res_path = _ICN_RES_PATH.relative_to(cwd_path)
         return _s(rel_icn_img_path, '->', rel_icn_res_path)
     except Exception as ex:
         return _f(ex)
@@ -218,6 +217,9 @@ def _compile_qrc():
 
         cwd_path = Path.cwd()
         rel_qrc_res_path = _QRC_RES_PATH.relative_to(cwd_path)
+        if not _QRC_SRC_PATH.exists():
+            return _f('Could not compile', rel_qrc_res_path)
+
         rel_qrc_src_path = _QRC_SRC_PATH.relative_to(cwd_path)
         return _s(rel_qrc_res_path, '->', rel_qrc_src_path)
     except Exception as ex:
@@ -245,9 +247,9 @@ def _compile_exe(is_release=None):
             rel_dist_dir_path = _DST_DIR_PATH.relative_to(cwd_path)
             return _f('Could not find', rel_dist_dir_path)
 
-        if not _MAIN_DST_PATH.exists():
-            rel_main_dist_path = _MAIN_DST_PATH.relative_to(cwd_path)
-            return _f('Could not compile', rel_main_dist_path)
+        main_dist_path = _MAIN_DST_PATH / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
+        if not main_dist_path.exists():
+            return _f('Could not compile', rel_main_src_path)
 
         if is_release:
             out_dir_path = _REL_OUT_DIR_PATH
@@ -285,6 +287,9 @@ def _compile_exe(is_release=None):
             lambda item_path, dest_path: log_copy(_DST_DIR_PATH, out_dir_path, item_path, dest_path))
 
         main_out_path = out_dir_path / f'{_MAIN_EXE_NAME}{_EXE_EXT}'
+        if not main_out_path.exists():
+            return _f('Could not compile', rel_main_src_path)
+
         rel_main_out_path = main_out_path.relative_to(cwd_path)
         return _s(rel_main_src_path, '->', rel_main_out_path)
     except Exception as ex:
