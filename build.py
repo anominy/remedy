@@ -252,8 +252,8 @@ def _compile_exe(is_release=None):
         subprocess.run([*_APPC_CMD_LST, *compile_args, str(_MAIN_SRC_PATH.resolve())], check=True)
 
         if not _DST_DIR_PATH.exists():
-            rel_dist_dir_path = _DST_DIR_PATH.relative_to(cwd_path)
-            return _f('Could not find', rel_dist_dir_path)
+            rel_dst_dir_path = _DST_DIR_PATH.relative_to(cwd_path)
+            return _f('Could not find', rel_dst_dir_path)
 
         if not _MAIN_DST_PATH.exists():
             return _f('Could not compile', rel_main_src_path)
